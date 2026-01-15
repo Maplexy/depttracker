@@ -1,0 +1,15 @@
+name = "loan-app"
+compatibility_date = "2024-01-01"
+
+[vars]
+# Add your environment variables here or set them in Cloudflare Pages dashboard
+# NEXT_PUBLIC_SUPABASE_URL="your_supabase_url"
+# NEXT_PUBLIC_SUPABASE_ANON_KEY="your_supabase_anon_key"
+
+[[env.production]]
+[env.production.vars]
+# Production environment variables
+
+[[env.preview]]
+[env.preview.vars]
+# Preview environment variables

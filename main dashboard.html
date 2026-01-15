@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DebtTracker - My Loans Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#09090b", // Zinc 950 aesthetic
+                        "zinc-800": "#27272a",
+                        "zinc-900": "#18181b",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-zinc-900 dark:text-zinc-100 min-h-screen">
+<div class="layout-container flex flex-col min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-3xl font-bold">account_balance_wallet</span>
+<h2 class="text-zinc-900 dark:text-white text-lg font-bold tracking-tight">DebtTracker</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-zinc-600 dark:text-zinc-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">Dashboard</a>
+<a class="text-zinc-900 dark:text-white text-sm font-medium border-b-2 border-primary pb-0.5" href="#">Loans</a>
+<a class="text-zinc-600 dark:text-zinc-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">Lenders</a>
+<a class="text-zinc-600 dark:text-zinc-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-sm">search</span>
+<input class="w-64 bg-zinc-100 dark:bg-zinc-900 border-none rounded-lg py-1.5 pl-10 pr-4 text-sm focus:ring-1 focus:ring-primary placeholder:text-zinc-500" placeholder="Search friends or loans..." type="text"/>
+</div>
+<button class="p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-zinc-200 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 bg-cover bg-center" data-alt="User profile avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB03PMK5MFbba3PzMa9RC59XxK68HybhGBNpURNY3x3-ETiO-1gvXXlIMY3Phoi0ryXBM1g9Dakd9Pso-TU0Z5w6HcfSIjpJHg7CkGMo4jiiUdv3lH7OElquxv_qhPUjKUKP6TG5YSsMq650WGihe0aXo8gvldTSFNeIGFT8ZAVyZNM9S3OLvIekVT5iyz-yjJz8H_FRPxt9KfDEbRZcIg_P0btYew82uwPO63OL0F-gPj_iaHd2kDZT0TxiViEnvV-N-uo_77IzXJ0');"></div>
+</div>
+</div>
+</header>
+<main class="max-w-[1200px] mx-auto px-6 py-8 flex-1 w-full">
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+<div>
+<h1 class="text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white">My Loans</h1>
+<p class="text-zinc-500 dark:text-zinc-400 mt-1">Manage and track your private lending activities with friends.</p>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-black font-bold rounded-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>Add New Loan</span>
+</button>
+</div>
+<!-- Stats Summary -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+<div class="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 p-5 rounded-xl">
+<p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Total Owed to You</p>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="text-2xl font-bold tabular-nums">$14,250.00</span>
+<span class="text-xs font-semibold text-primary bg-primary/10 px-1.5 py-0.5 rounded">+5.2%</span>
+</div>
+</div>
+<div class="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 p-5 rounded-xl">
+<p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Active Loans</p>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="text-2xl font-bold tabular-nums">8</span>
+<span class="text-xs font-semibold text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded">0%</span>
+</div>
+</div>
+<div class="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 p-5 rounded-xl">
+<p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Latest Payment</p>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="text-2xl font-bold tabular-nums">+$250.00</span>
+<span class="text-xs font-semibold text-zinc-400 dark:text-zinc-400">from Alex</span>
+</div>
+</div>
+</div>
+<!-- Loan Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Loan Card 1 -->
+<div class="group bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:border-primary/50 transition-all">
+<div class="p-6">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">AR</div>
+<div>
+<h3 class="font-bold text-zinc-900 dark:text-white">Alex Rivera</h3>
+<p class="text-xs text-zinc-500">Issued Mar 12, 2024</p>
+</div>
+</div>
+<button class="text-zinc-400 hover:text-zinc-100"><span class="material-symbols-outlined">more_horiz</span></button>
+</div>
+<div class="mb-6">
+<p class="text-xs font-medium text-zinc-500 uppercase tracking-wider">Remaining Balance</p>
+<h4 class="text-4xl font-black text-zinc-900 dark:text-white tabular-nums mt-1">$1,250.00</h4>
+<p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">of $2,000.00 original</p>
+</div>
+<div class="space-y-2 mb-6">
+<div class="flex justify-between items-end">
+<span class="text-xs font-medium text-zinc-500">Repayment Progress</span>
+<span class="text-xs font-bold text-primary">62.5%</span>
+</div>
+<div class="h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full shadow-[0_0_10px_rgba(19,236,91,0.3)]" style="width: 62.5%"></div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-black text-sm font-bold py-2 rounded-lg hover:bg-primary/90 transition-colors">Log Payment</button>
+<button class="px-3 py-2 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg text-zinc-600 dark:text-zinc-400 transition-colors">
+<span class="material-symbols-outlined text-sm">history</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Loan Card 2 -->
+<div class="group bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:border-primary/50 transition-all">
+<div class="p-6">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">JS</div>
+<div>
+<h3 class="font-bold text-zinc-900 dark:text-white">Jordan Smith</h3>
+<p class="text-xs text-zinc-500">Issued Jan 05, 2024</p>
+</div>
+</div>
+<button class="text-zinc-400 hover:text-zinc-100"><span class="material-symbols-outlined">more_horiz</span></button>
+</div>
+<div class="mb-6">
+<p class="text-xs font-medium text-zinc-500 uppercase tracking-wider">Remaining Balance</p>
+<h4 class="text-4xl font-black text-zinc-900 dark:text-white tabular-nums mt-1">$450.00</h4>
+<p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">of $1,000.00 original</p>
+</div>
+<div class="space-y-2 mb-6">
+<div class="flex justify-between items-end">
+<span class="text-xs font-medium text-zinc-500">Repayment Progress</span>
+<span class="text-xs font-bold text-primary">55%</span>
+</div>
+<div class="h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 55%"></div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-black text-sm font-bold py-2 rounded-lg hover:bg-primary/90 transition-colors">Log Payment</button>
+<button class="px-3 py-2 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg text-zinc-600 dark:text-zinc-400 transition-colors">
+<span class="material-symbols-outlined text-sm">history</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Loan Card 3 -->
+<div class="group bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:border-primary/50 transition-all">
+<div class="p-6">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-500 font-bold">CM</div>
+<div>
+<h3 class="font-bold text-zinc-900 dark:text-white">Casey Montgomery</h3>
+<p class="text-xs text-zinc-500">Issued Feb 20, 2024</p>
+</div>
+</div>
+<button class="text-zinc-400 hover:text-zinc-100"><span class="material-symbols-outlined">more_horiz</span></button>
+</div>
+<div class="mb-6">
+<p class="text-xs font-medium text-zinc-500 uppercase tracking-wider">Remaining Balance</p>
+<h4 class="text-4xl font-black text-zinc-900 dark:text-white tabular-nums mt-1">$2,100.00</h4>
+<p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">of $5,000.00 original</p>
+</div>
+<div class="space-y-2 mb-6">
+<div class="flex justify-between items-end">
+<span class="text-xs font-medium text-zinc-500">Repayment Progress</span>
+<span class="text-xs font-bold text-primary">58%</span>
+</div>
+<div class="h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 58%"></div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-black text-sm font-bold py-2 rounded-lg hover:bg-primary/90 transition-colors">Log Payment</button>
+<button class="px-3 py-2 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg text-zinc-600 dark:text-zinc-400 transition-colors">
+<span class="material-symbols-outlined text-sm">history</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Loan Card 4 -->
+<div class="group bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:border-primary/50 transition-all">
+<div class="p-6">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-500 font-bold">TV</div>
+<div>
+<h3 class="font-bold text-zinc-900 dark:text-white">Taylor Vance</h3>
+<p class="text-xs text-zinc-500">Issued Apr 01, 2024</p>
+</div>
+</div>
+<button class="text-zinc-400 hover:text-zinc-100"><span class="material-symbols-outlined">more_horiz</span></button>
+</div>
+<div class="mb-6">
+<p class="text-xs font-medium text-zinc-500 uppercase tracking-wider">Remaining Balance</p>
+<h4 class="text-4xl font-black text-zinc-900 dark:text-white tabular-nums mt-1">$800.00</h4>
+<p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">of $1,200.00 original</p>
+</div>
+<div class="space-y-2 mb-6">
+<div class="flex justify-between items-end">
+<span class="text-xs font-medium text-zinc-500">Repayment Progress</span>
+<span class="text-xs font-bold text-primary">33%</span>
+</div>
+<div class="h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 33%"></div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-black text-sm font-bold py-2 rounded-lg hover:bg-primary/90 transition-colors">Log Payment</button>
+<button class="px-3 py-2 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg text-zinc-600 dark:text-zinc-400 transition-colors">
+<span class="material-symbols-outlined text-sm">history</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Add New Loan Placeholder -->
+<div class="flex flex-col items-center justify-center border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl p-6 min-h-[340px] hover:border-primary/50 transition-all cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-400 group-hover:text-primary group-hover:bg-primary/10 transition-colors mb-4">
+<span class="material-symbols-outlined text-3xl">add</span>
+</div>
+<p class="font-bold text-zinc-900 dark:text-white">Create New Loan</p>
+<p class="text-sm text-zinc-500 text-center mt-1">Set up a new lending record for a friend or family member.</p>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="border-t border-zinc-200 dark:border-zinc-800 py-6 mt-12 bg-zinc-50 dark:bg-zinc-900/30">
+<div class="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-sm text-zinc-500">© 2024 DebtTracker. Secure private lending management.</p>
+<div class="flex gap-6">
+<a class="text-xs text-zinc-500 hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-xs text-zinc-500 hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-xs text-zinc-500 hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>
