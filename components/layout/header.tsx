@@ -1,12 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Wallet, Search, Bell, LogOut } from "lucide-react";
-import { signOut } from "@/app/actions/auth";
+import { supabase } from "@/lib/supabase/client";
 import { usePathname } from "next/navigation";
 
 export default function Header() {
+  const router = useRouter();
   const pathname = usePathname();
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.push("/login");
+  };
 
   const isActive = (path: string) => {
     if (path === "/dashboard") {
@@ -57,15 +64,13 @@ export default function Header() {
           <button className="p-2 text-muted-foreground hover:bg-muted rounded-lg">
             <Bell className="size-5" />
           </button>
-          <form action={signOut}>
-            <button
-              type="submit"
-              className="p-2 text-muted-foreground hover:bg-muted hover:text-destructive rounded-lg"
-              title="Sign out"
-            >
-              <LogOut className="size-5" />
-            </button>
-          </form>
+          <button
+            onClick={handleSignOut}
+            className="p-2 text-muted-foreground hover:bg-muted hover:text-destructive rounded-lg"
+            title="Sign out"
+          >
+            <LogOut className="size-5" />
+          </button>
           <div className="h-8 w-8 rounded-full bg-muted border border-input" />
         </div>
       </div>

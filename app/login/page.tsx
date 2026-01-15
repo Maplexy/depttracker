@@ -3,12 +3,14 @@
 import { useState } from "react";
 import { Lock, Wallet } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signIn } from "@/app/actions/auth";
+import { supabase } from "@/lib/supabase/client";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -16,11 +18,19 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
-    const result = await signIn(formData);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
-    if (result.error) {
-      setError(result.error);
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setError(error.message);
       setLoading(false);
+    } else {
+      router.push("/dashboard");
     }
   }
   return (

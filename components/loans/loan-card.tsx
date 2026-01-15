@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatCurrency, calculatePercentage } from "@/lib/utils";
-import { DollarSign, MoreHorizontal, History } from "lucide-react";
+import { DollarSign, MoreHorizontal, History, Trash2 } from "lucide-react";
 import { Database } from "@/lib/supabase/types";
 
 type Loan = Database["public"]["Tables"]["loans"]["Row"] & {
@@ -16,9 +17,11 @@ interface LoanCardProps {
   loan: Loan;
   onLogPayment: (loanId: string) => void;
   onViewHistory: (loanId: string) => void;
+  onDelete: (loanId: string) => void;
 }
 
-export default function LoanCard({ loan, onLogPayment, onViewHistory }: LoanCardProps) {
+export default function LoanCard({ loan, onLogPayment, onViewHistory, onDelete }: LoanCardProps) {
+  const [showMenu, setShowMenu] = useState(false);
   const paidAmount = loan.amount - loan.remaining_amount;
   const percentage = calculatePercentage(paidAmount, loan.amount);
   const initials = loan.profiles?.full_name
@@ -47,9 +50,28 @@ export default function LoanCard({ loan, onLogPayment, onViewHistory }: LoanCard
               </p>
             </div>
           </div>
-          <button className="text-muted-foreground hover:text-foreground">
-            <MoreHorizontal className="size-5" />
-          </button>
+          <div className="relative">
+            <button 
+              onClick={() => setShowMenu(!showMenu)}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <MoreHorizontal className="size-5" />
+            </button>
+            {showMenu && (
+              <div className="absolute right-0 top-8 z-10 w-48 bg-card border border-border rounded-lg shadow-lg overflow-hidden">
+                <button
+                  onClick={() => {
+                    onDelete(loan.id);
+                    setShowMenu(false);
+                  }}
+                  className="w-full flex items-center gap-2 px-4 py-3 text-sm text-destructive hover:bg-destructive/10 transition-colors text-left"
+                >
+                  <Trash2 className="size-4" />
+                  Delete Loan
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="mb-6">

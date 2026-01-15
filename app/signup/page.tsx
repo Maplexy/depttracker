@@ -5,7 +5,7 @@ import { UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signUp } from "@/app/actions/auth";
+import { supabase } from "@/lib/supabase/client";
 import Link from "next/link";
 
 export default function SignupPage() {
@@ -18,13 +18,25 @@ export default function SignupPage() {
     setSuccess("");
     setLoading(true);
 
-    const result = await signUp(formData);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const fullName = formData.get("fullName") as string;
 
-    if (result.error) {
-      setError(result.error);
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+        },
+      },
+    });
+
+    if (error) {
+      setError(error.message);
       setLoading(false);
     } else {
-      setSuccess(result.message || "Account created! Check your email to confirm.");
+      setSuccess("Check your email to confirm your account!");
     }
   }
 
